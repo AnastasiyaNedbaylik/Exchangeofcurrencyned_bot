@@ -13,7 +13,7 @@ class CryptoConverter:
     @staticmethod
     def get_price(base: str, quote: str, amount: str):
 
-        if quote == base:
+        if base == quote:
             raise ValidationException(f'Введите различные валюты: {base}.')
 
         try:
@@ -29,6 +29,8 @@ class CryptoConverter:
 
             if amount <= 0:
                 raise ValidationException(f'Введите сумму больше 0')
+            elif amount > 1000000:
+                raise ValidationException(f'Введите сумму не больше 1000000')
 
         except ValueError:
             raise ValidationException(f'Не удалось обработать количество {amount}')
@@ -36,5 +38,5 @@ class CryptoConverter:
         response = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={base_ticker}&tsyms={quote_ticker}')
         data = json.loads(response.content)
 
-        total_base = round(data[currencies[base]], 2)
+        total_base = round(data[currencies[quote]], 2)
         return total_base
