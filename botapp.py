@@ -24,7 +24,7 @@ def command_help(message: telebot.types.Message):
     text = 'Нажмите /currencies, чтобы увидеть список доступных валют \n' \
            'Для начала работы введите команду в следующем формате (через пробел):' \
            ' \n- Название валюты, цену которой Вы хотите узнать  \n- Название валюты, в которой Вы хотите узнать ' \
-           'цену первой валюты \n- Количество первой валюты\n' \
+           'цену первой валюты \n- Количество первой валюты (максимальная сумма 1000000)\n' \
            'Для того, чтобы начать нашу беседу сначала, нажмите /start'
 
     bot.reply_to(message, text)
@@ -52,7 +52,7 @@ def get_price(message: telebot.types.Message):
         base, quote, amount = values
         total_base = CryptoConverter.get_price(base, quote, amount)
     except ValidationException as e:
-        bot.reply_to(message, f'Ошибка пользователя{e}\n')
+        bot.reply_to(message, f'Ошибка пользователя\n{e}\n')
         # bot.register_next_step_handler(message, get_price)
 
     except Exception as e:
