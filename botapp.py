@@ -44,7 +44,7 @@ def get_price(message: telebot.types.Message):
         values = message.text.title().split()
 
         if len(values) != 3:
-            raise ValidationException('Неверно введены параметры. \n'
+            raise ValidationException('\nНеверно введены параметры. \n'
                                       'Введите еще раз валюты и количество первой валюты\n'
                                       'Пример: Доллар Евро 100\n'
                                       'Нажмите /help, если у Вас есть затруднения')
@@ -52,18 +52,20 @@ def get_price(message: telebot.types.Message):
         base, quote, amount = values
         total_base = CryptoConverter.get_price(base, quote, amount)
     except ValidationException as e:
-        bot.reply_to(message, f'Ошибка пользователя{e}\n')
-        bot.register_next_step_handler(message, get_price)
+        bot.reply_to(message, f'Ошибка пользователя\n{e}\n')
+        # bot.register_next_step_handler(message, get_price)
 
     except Exception as e:
         bot.reply_to(message, f'Что-то пошла не так! Ошибка\n{e}\n'
                               'Нажмите /help, если у Вас есть затруднения')
         bot.register_next_step_handler(message, get_price)
     else:
-        text = f'Цена {amount} {base} в {quote}: {total_base}'
+        text = f'Цена {amount} {base} в {quote}: {total_base} {quote}'
         bot.send_message(message.chat.id, text)
-        bot.reply_to(message, f'@{message.chat.username}, чтобы продолжить, повторите ввод данных')
-        bot.register_next_step_handler(message, get_price)
+        bot.send_message(message.chat.id, f'@{message.chat.username}, чтобы продолжить, повторите ввод данных\n'
+                         'Нажмите /help, если у Вас есть затруднения\n'
+                         'Нажмите /currencies, чтобы увидеть список доступных валют')
+        # bot.register_next_step_handler(message, get_price)
 
 
 bot.polling(none_stop=True)
