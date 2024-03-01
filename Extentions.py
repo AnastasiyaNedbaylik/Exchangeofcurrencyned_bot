@@ -33,7 +33,7 @@ class CryptoConverter:
         except ValueError:
             raise ValidationException(f'Не удалось обработать количество {amount}')
 
-        response = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={quote_ticker}&tsyms={base_ticker}')
+        response = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={base_ticker}&tsyms={quote_ticker}')
         data = json.loads(response.content)
 
         total_base = round(data[currencies[base]], 2)
