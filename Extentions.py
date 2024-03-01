@@ -29,6 +29,8 @@ class CryptoConverter:
 
             if amount <= 0:
                 raise ValidationException(f'Введите сумму больше 0')
+            elif amount > 1000000:
+                raise ValidationException(f'Введите сумму не больше 1000000')
 
         except ValueError:
             raise ValidationException(f'Не удалось обработать количество {amount}')
