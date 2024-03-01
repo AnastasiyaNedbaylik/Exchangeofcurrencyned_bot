@@ -67,3 +67,5 @@ def get_price(message: telebot.types.Message):
 
 
 bot.polling(none_stop=True)
+
+# end
