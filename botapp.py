@@ -12,7 +12,7 @@ def command_start(message: telebot.types.Message):
     text = f'Добро пожаловать @{message.chat.username} в чат для конвертации валют!\n' \
            'Для начала работы введите команду в следующем формате (через пробел):' \
            ' \n- Название валюты, цену которой Вы хотите узнать  \n- Название валюты, в которой Вы хотите узнать ' \
-           'цену первой валюты \n- Количество первой валюты\n' \
+           'цену первой валюты \n- Количество первой валюты (максимальная сумма 1000000)\n' \
            'Нажмите /currencies, чтобы увидеть список доступных валют\n' \
            'Если вдруг Вам нужна помощь, нажмите /help'
 
@@ -24,7 +24,7 @@ def command_help(message: telebot.types.Message):
     text = 'Нажмите /currencies, чтобы увидеть список доступных валют \n' \
            'Для начала работы введите команду в следующем формате (через пробел):' \
            ' \n- Название валюты, цену которой Вы хотите узнать  \n- Название валюты, в которой Вы хотите узнать ' \
-           'цену первой валюты \n- Количество первой валюты\n' \
+           'цену первой валюты \n- Количество первой валюты (максимальная сумма 1000000)\n' \
            'Для того, чтобы начать нашу беседу сначала, нажмите /start'
 
     bot.reply_to(message, text)
@@ -44,8 +44,8 @@ def get_price(message: telebot.types.Message):
         values = message.text.title().split()
 
         if len(values) != 3:
-            raise ValidationException('\nНеверно введены параметры. \n'
-                                      'Введите еще раз валюты и количество первой валюты\n'
+            raise ValidationException('Неверно введены параметры. \n'
+                                      'Введите еще раз валюты и количество первой валюты (максимальная сумма 1000000)\n'
                                       'Пример: Доллар Евро 100\n'
                                       'Нажмите /help, если у Вас есть затруднения')
 
@@ -62,9 +62,7 @@ def get_price(message: telebot.types.Message):
     else:
         text = f'Цена {amount} {base} в {quote}: {total_base} {quote}'
         bot.send_message(message.chat.id, text)
-        bot.send_message(message.chat.id, f'@{message.chat.username}, чтобы продолжить, повторите ввод данных\n'
-                         'Нажмите /help, если у Вас есть затруднения\n'
-                         'Нажмите /currencies, чтобы увидеть список доступных валют')
+        bot.send_message(message.chat.id, f'@{message.chat.username}, чтобы продолжить, повторите ввод данных')
         # bot.register_next_step_handler(message, get_price)
 
 
